@@ -1,0 +1,32 @@
+<div class="column">
+	<nav class="panel">
+		<p class="panel-heading">Who to Follow</p>
+	<% @follower_suggestions.each do |user| %>
+			<div class="panel-block">
+			<div style="justify-content: space-between;">
+				<article class="media">
+					<div class="media-left">
+						<figure class="image is-64x64">
+							<%= link_to image_tag(user.avatar_thumbnail) , profile_path(user_id: user.id) %>
+						</figure>
+					</div>
+					<div class="media-content">
+						<div class="content">
+							<p>
+								<strong><%= link_to user.name, profile_path(user_id: user.id) %></strong><br>
+								<small><%= link_to "@"+user.username , profile_path(user_id: user.id) %> </small>
+							</p>
+						</div>
+					</div>
+					<div></div>
+					<div>
+						<div class="media-right">
+							<%= button_to "Follow", friendships_path(user_id: user.id) %>
+						</div>
+					</div>
+				</article>
+			</div>
+			</div>
+	<% end %>
+	</nav>
+</div>

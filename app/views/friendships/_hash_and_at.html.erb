@@ -1,0 +1,30 @@
+<% t1 = @tweet.tweet.split(" ") %>
+<% at_arr = [] %>
+<% hash_arr = [] %>
+<% t1.each do | element | %>
+    <% if element.starts_with?("@") && !element.include?("#") %>
+        <% if element.count("@") == 1 && element.size() != element.count("@") %>
+            <% at_arr.append(element) %>
+        <% end %>
+    <% end %>
+    <% if element.starts_with?("#") && !element.include?("@") %>
+        <% if element.count("#") == 1 && element.size() != element.count("#") %>
+            <% hash_arr.append(element) %>
+        <% end %>
+    <% end %>
+<% end %>
+<% t1.each do |element| %>
+    <% if at_arr.include?(element) %>
+        <% @finduser = User.find_by(username: element[1..-1]) %>
+        <% if @finduser.present? %>
+            <%  @id = @finduser.id  %>
+            <span class="hash-tag"><%= link_to element, profile_path(user_id: @id) %></span>
+        <% else %>
+            <%= element %>
+        <% end %>
+    <% elsif hash_arr.include?(element) %>
+        <span class="hash-tag"><%= link_to element, "/tweets/hashtag/#{element.delete('#')}" %></span>
+    <%  else %>
+        <%= element %>
+    <% end %>
+<% end %>

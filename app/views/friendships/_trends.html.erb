@@ -1,0 +1,13 @@
+<div class="column is-one-quarter" style="width:inherit">
+	<nav class="panel">
+		<p class="panel-heading">Recent Hashtags</p>
+		<% trends = Tag.limit(6).order("created_at DESC") %>
+		<% trends.each do | tag | %>
+			<a class="panel-block" style="border: 10px;">
+				<div style="margin-left: 10px;">
+					<%= link_to "##{tag.name}", "/tweets/hashtag/#{tag.name.delete('#')}" %>
+				</div>
+			</a>
+		<% end %>
+	</nav>
+</div>

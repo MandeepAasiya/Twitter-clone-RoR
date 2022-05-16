@@ -1,0 +1,46 @@
+<div class="column is-one-quarter" style="width:auto">
+	<nav class="panel">
+		<p class="panel-heading">Profile</p>
+		<div class="panel-block">
+			<article class="media">
+				<div class="media-left">
+					<figure class="image is-64x64">
+						<%= link_to image_tag(current_user.avatar_thumbnail), profile_path(user_id: current_user.id) %>
+					</figure>
+				</div>
+				<div class="media-content">
+					<div class="content">
+						<p>
+							<strong><%= link_to current_user.name, profile_path(user_id: current_user.id) %></strong><br />
+							<small><%= link_to '@'+current_user.username, profile_path(user_id: current_user.id) %></small><br />
+							<%=  current_user.bio %><br />
+							<small><i>Joined <%= time_ago_in_words current_user.created_at %> ago</i></small>
+						</p>
+					</div>
+				</div>
+			</article>
+		</div>
+		<div class="panel-block">
+			<div class="level is-mobile">
+				<div class="level-item has-centered-text">
+					<div>
+						<p class="heading">Tweets</p>
+						<p class="title is-6"><%= link_to current_user.tweets.count, profile_path(user_id: current_user.id) %></p>
+					</div>
+				</div>
+				<div class="level-item has-centered-text">
+					<div>
+						<p class="heading">Following</p>
+						<p class="title is-6"><%= link_to current_user.following .count, followings_list_path(user_id: current_user.id) %></p>
+					</div>
+				</div>
+				<div class="level-item has-centered-text">
+					<div>
+						<p class="heading">Followers</p>
+						<p class="title is-6"><%= link_to current_user.followers.count, followers_list_path(user_id: current_user.id) %></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+</div>

@@ -1,0 +1,27 @@
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-4">
+        
+      <h3 class="title is-2"> <%= "Search Results for \"" + params[:q] +"\"" %></h3>
+      <% @search_users.each do | user | %>
+        <article class="media">
+            <div class="media-left">
+                <figure class="image is-64x64">
+                    <%= image_tag(user.avatar_thumbnail) %>
+                </figure>
+            </div>
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <strong><%= link_to user.name, profile_path(user_id: user.id) %></strong><br />
+                        <%= link_to '@'+user.username, profile_path(user_id: user.id)%>
+                    </p>
+                </div>
+            </div>
+        </article>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</section>
