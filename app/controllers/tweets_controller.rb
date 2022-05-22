@@ -5,12 +5,17 @@ class TweetsController < ApplicationController
 
   def index
     if user_signed_in?
-      @tweets = Tweet.where(parent_id: nil, user_id: current_user.following).order("created_at DESC").or(Tweet.where(user_id: current_user))
-      following_ids = current_user.following.all
-      @follower_suggestions = User.limit(3).where.not(id: following_ids).where.not(id: current_user.id)
+      @tweets = Tweet.where(user_id: current_user.following).or(Tweet.where(user_id: current_user))
+      @tweets = @tweets.where(user_id: User.where(is_active: true)).or(@tweets.where(user_id: current_user))
+      @tweets = @tweets.where(parent_id: nil).order("created_at DESC")
+
+      following_ids = current_user.following.all.where(is_active: true)
+
+      @follower_suggestions = User.where.not(id: following_ids, is_active: true)
+      @follower_suggestions = @follower_suggestions.where.not(id: current_user.id).limit(3)
     else
-      @tweets = Tweet.where(parent_id: nil).order("created_at DESC")
-      @follower_suggestions = User.limit(3)
+      @tweets = Tweet.where(parent_id: nil, user_id: User.where(is_active: true)).order("created_at DESC")
+      @follower_suggestions = User.where(is_active: true).limit(3)
     end
 
     @tweet = Tweet.new
@@ -70,11 +75,21 @@ class TweetsController < ApplicationController
 
   def search
     @search_users = User.where("name LIKE ? or username LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%")
+    if user_signed_in?
+      @search_users = @search_users.where(is_active: true).or(@search_users.where(id: current_user))
+    else
+      @search_users = @search_users.where(is_active: true)
+    end
   end
 
   def hashtags
     tag = Tag.find_by(name: params[:name])
-    @tweets = tag.tweets.order("created_at DESC")
+    if !user_signed_in?
+      @tweets = tag.tweets.where(user_id: User.where(is_active: true)).order("created_at DESC")
+    else 
+      @tweets = tag.tweets.where(user_id: User.where(is_active: true)).or(tag.tweets.where(user_id: current_user))
+      @tweets = @tweets.order("created_at DESC")
+    end
   end
 
   def likes
@@ -88,7 +103,7 @@ class TweetsController < ApplicationController
     end
 
     def tweet_params
-      params.require(:tweet).permit(:tweet, :parent_id)
+      params.require(:tweet).permit(:tweet, :parent_id, :image)
     end
 
 end

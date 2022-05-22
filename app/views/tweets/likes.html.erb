@@ -21,7 +21,10 @@
                   <small><%= link_to '@'+@tweet.user.username, profile_path(user_id: @tweet.user.id) %> . </small> 
                 <small><%= time_ago_in_words @tweet.created_at %> ago</small><br />
                   <p><%= @tweet.tweet %></p>
-                <%= render 'hash_and_at'%>
+                <%= render 'hash_and_at'%><br><br>
+                <% if @tweet.image.attached? %>
+                  <%= image_tag @tweet.image, style: "width: 200px; display: block" %><br>
+                <% end %>
                 <div style="display:flex; width:100px; justify-content:space-evenly; align-items: center;">
                   <% if user_signed_in? %>
                     <% like = current_user.likes.find_by(tweet: @tweet) %>
@@ -60,7 +63,8 @@
           </div>
         <strong><span> Liked By...</span></strong>
         <br><br>
-        <% @tweet.likes.each do | like | %>
+        <% @likes = @tweet.likes.where(user_id: User.where(is_active: true)).or(@likes.where(user_id: current_user)) %>
+        <% @likes.each do | like | %>
             <article class="media">
                 <div class="media-left">
                     <figure class="image is-64x64">

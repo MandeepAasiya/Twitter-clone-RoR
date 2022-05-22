@@ -13,22 +13,25 @@
 					<small><%= time_ago_in_words tweet.created_at %> ago</small><br />
 					<% @tweet = tweet %>
 					<p><%= render 'hash_and_at' %></p>
+					<% if tweet.image.attached? %>
+						<%= image_tag tweet.image, style: "width: 450px; display: block" %><br>
+					<% end %>
 					
 					<div style="display:flex; width:200px; justify-content:space-evenly; align-items: center;">
 						<%= link_to "#{Tweet.where(parent_id: tweet.id).count} Replies", tweet_path(tweet) %>
-							<% if user_signed_in? %>
-								<% like = current_user.likes.find_by(tweet: tweet) %>
-								<% if like.nil? %>
-									<%= button_to  likes_path, params: {like: {tweet_id: tweet.id }}, method: :post do %>
-										<span class="icon"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
-									<% end %>
-								<% else %>
-									<%= button_to  like_path(like), method: :delete do %>
-										<span class="icon"><i class="fa fa-heart" aria-hidden="true"></i></span>
-									<% end %>
+						<% if user_signed_in? %>
+							<% like = current_user.likes.find_by(tweet: tweet) %>
+							<% if like.nil? %>
+								<%= button_to  likes_path, params: {like: {tweet_id: tweet.id }}, method: :post do %>
+									<span class="icon"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
+								<% end %>
+							<% else %>
+								<%= button_to  like_path(like), method: :delete do %>
+									<span class="icon"><i class="fa fa-heart" aria-hidden="true"></i></span>
 								<% end %>
 							<% end %>
-							<%= link_to "#{tweet.likes.count} Likes",  "/tweets/likes/#{tweet.id}" %>
+						<% end %>
+						<%= link_to "#{tweet.likes.count} Likes",  "/tweets/likes/#{tweet.id}" %>
 					</div>
 				</div>
 			</div>

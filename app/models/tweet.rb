@@ -4,6 +4,8 @@ class Tweet < ApplicationRecord
 
     has_and_belongs_to_many :tags
 
+    has_one_attached :image
+
     validates :tweet, length: 1..140
 
     after_create do

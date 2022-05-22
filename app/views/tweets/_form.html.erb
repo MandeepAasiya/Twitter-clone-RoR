@@ -1,4 +1,4 @@
-<% if user_signed_in? %>
+<% if user_signed_in? && current_user.is_active? %>
   <article class="media box">
     <figure class="media-left">
       <p class="image is-64x64">
@@ -11,6 +11,10 @@
       <div class="field">
         <div class="control">
           <%= f.input :tweet, label: "Tweet about it", input_html: { class: "textarea "}, wrapper: false, label_html: {class: "label"}, placeholder: "Compose a new tweet...", autofocus: true %>
+        	<div class="field">
+            <%= image_tag @tweet.image , style: "width: 450px; display: block" if @tweet.image.attached? %>
+          </div>
+          <%= f.file_field :image, class: "form-control" %>
         </div>
       </div>
       <%= f.button :submit, class: "button is-info" %>

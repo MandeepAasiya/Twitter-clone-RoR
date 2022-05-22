@@ -79,21 +79,21 @@
                     <div class="content">
                         <% if @tweet.parent_id != nil %>
                             <small><i><%= "Replied to "  %></i></small>
-                            <%= link_to "tweet", tweet_path(@tweet.parent_id) %>
+                            <span class="hash-tag"><%= link_to "tweet", tweet_path(@tweet.parent_id) %></span>
                             <br>
                         <% end %>
                         <strong><%= @tweet.user.name %> </strong>
                         <small><%= '@'+@tweet.user.username %> . </small> 
                         <small><%= time_ago_in_words @tweet.created_at %> ago</small><br />
                         <p><%= render 'hash_and_at' %></p>
+                        <% if @tweet.image.attached? %>
+                            <%= image_tag @tweet.image, style: "width: 450px; display: block" %><br>
+                        <% end %>
                         
                         <div style="display:flex; width:200px; justify-content:space-evenly; align-items: center;">
                             <% if @tweet.parent_id == nil %>
-                                <%= link_to Tweet.where(parent_id: @tweet.id).count, tweet_path(@tweet) %>
-                            <% else %>
-                                <%= Tweet.where(parent_id: tweet.id).count %>
+                                <%= link_to "#{Tweet.where(parent_id: @tweet.id).count} Replies", tweet_path(@tweet) %>
                             <% end %>
-						    <%= "Replies"%>
                             <% if user_signed_in? %>
                                 <% like = current_user.likes.find_by(tweet: tweet) %>
                                 <% if like.nil? %>

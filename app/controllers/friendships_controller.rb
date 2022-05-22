@@ -5,18 +5,20 @@ class FriendshipsController < ApplicationController
 
     def profile
         @user = User.find(params[:user_id])
-        #@finduser = User.find_by(params[:username])
+        if @user.is_active == false && @user.id != current_user.id
+            user = User.find(params[user_id: -1])
+        end
         @tweets = @user.tweets
     end
 
     def followers_list
         @user = User.find(params[:user_id])
-        @followers_list = @user.followers.all
+        @followers_list = @user.followers.where(is_active: true)
     end
 
     def followings_list
         @user = User.find(params[:user_id])
-        @followings_list = @user.following.all
+        @followings_list = @user.following.where(is_active: true)
     end
 
     def create
@@ -33,7 +35,6 @@ class FriendshipsController < ApplicationController
 
     def find_user
         @user = User.find(params[:user_id])
-        #@finduser = User.find_by(params[:username])
     end
 
 end
