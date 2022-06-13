@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController 
+
 	before_action :authenticate_user!
 
 	private
@@ -7,8 +8,9 @@ class RegistrationsController < Devise::RegistrationsController
 		params.require(:user).permit(:name, :username, :email, :password, :password_confirmation)
 	end
 
+
 	def acount_update_params 
-		params.require(:user).permit(:name, :username, :bio, :email, :password, :password_confirmation, :current_password)
+		params.require(:user).permit(:name, :username, :bio, :email, :is_active, :avatar, :password, :password_confirmation)
 	end
 
 

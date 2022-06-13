@@ -1,0 +1,55 @@
+<%= render 'conversations' %>
+      <div class="column" style="margin-left:150px;margin-right:150px;" >
+        <article class="media">
+          <div class="media-left">
+            <figure class="image is-64x64">
+              <%= link_to image_tag(@conversation.recipient.avatar_thumbnail), profile_path(user_id: @conversation.recipient.id) %>
+            </figure>
+          </div>
+          <div class="media-content">
+            <div class="content">
+                <strong class="title is-5"><%= link_to @conversation.recipient.name, profile_path(user_id: @conversation.recipient.id) %></strong><br>
+                <small class="title is-5"><%= link_to "@"+@conversation.recipient.username , profile_path(user_id: @conversation.recipient.id) %></small>
+            </div>
+          </div>
+        </article>
+        <br>
+        <section id="messages" class="mb4">
+          <% @messages.each do |message| %>
+            <% if message.body %>
+              <% user = User.find(message.user_id) %>
+              <%  if user == current_user %>
+                <div article="message is-dark" style="border-radius:30px;">
+                  <div class="message-body" style="border-style:none;margin-left:300px;">
+                    <div class="inline-block" style="text-align:right;"><strong><%= user.name %></strong> <%= message.message_time %></div>
+                    <div class="block pt4" style="">
+                      <div class="f4" style="text-align: right;"><%= message.body %></div>
+                    </div>
+                  </div>
+                </article>
+              <% else %>
+                <article class="message is-dark" style="margin-right:300px;border-radius:30px;">
+                  <div class="message-body" style="border-style:none;" >
+                    <div class="inline-block"><strong><%= user.name %></strong> <%= message.message_time %></div>
+                    <div class="block pt4">
+                      <div class="f4"><%= message.body %></div>
+                    </div>
+                  </div>
+                </article>
+              <% end %>
+            <% end %>
+          <% end %>
+        </section>
+        <br>
+        <%= simple_form_for [@conversation, @message] do |f| %>
+          <%= f.text_area :body, class: "textarea", placeholder: "Start a new message" %>
+          <%= f.text_field :user_id, value: current_user.id, type: "hidden"  %>
+          <br>
+          <div style="text-align:right;">
+            <%= f.submit "Send message", class: "button is-info" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

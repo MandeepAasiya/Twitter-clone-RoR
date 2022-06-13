@@ -74,7 +74,8 @@
             <div class="field">
                 <div class="control">
                 <%= f.input :tweet, label: "Post a reply tweet", input_html: { class: "textarea "}, wrapper: false, label_html: {class: "label"}, placeholder: "Post a new reply tweet...", autofocus: true %>
-                <%= f.input :parent_id, as: :hidden, input_html: { value: @tweet.id }  %>
+                <%= f.text_field :parent_id, value: @tweet.id, type: "hidden"  %>
+                <%= f.file_field :image, class: "form-control" %>
                 </div>
             </div>
             <%= f.button :submit, class: "button is-info" %>
@@ -100,6 +101,9 @@
                 <small><%= link_to '@'+tweet.user.username, profile_path(user_id: tweet.user.id) %> . </small> 
                 <small><%= time_ago_in_words tweet.created_at %> ago</small><br />
                 <p><%= tweet.tweet %></p>
+                <div class="field">
+                    <%= image_tag tweet.image , style: "width: 450px; display: block" if tweet.image.attached? %>
+                </div>
                 
                 <div style="display:flex; width:100px; justify-content:space-evenly; align-items: center;">
                 <% if user_signed_in? %>

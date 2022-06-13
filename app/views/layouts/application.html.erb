@@ -36,13 +36,16 @@
 				<div class="navbar-end">
           	<div class="navbar-item">
 				<div class="field is-grouped">
-				<div style="margin:auto;">
+				<div style="margin:auto;margin-right:25px;">
 				<form action="/search">
 						<input type="text" placeholder="Search Users..." name="q">
 						<button type="submit">Search</button>
 				</form>
 				</div>
             <% if user_signed_in? %>
+			    <p class="control">
+                	<%= link_to "Messages", '\conversations', class: "button is-info" %>
+              	</p>
               <p class="control">
                 <%= link_to current_user.name, edit_user_registration_path, class: "button is-info" %>
               </p>

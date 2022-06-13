@@ -2,68 +2,9 @@
   <div class="container">
     <div class="columns">
       <div style="display:flex; flex-direction:column">
-        <div class="column is-one-quarter" style="width:inherit">
-            <nav class="panel">
-                <p class="panel-heading">Profile</p>
-                <div class="panel-block">
-                    <article class="media">
-                        <div class="media-left">
-                            <figure class="image is-64x64">
-                                <%= link_to image_tag(@user.avatar_thumbnail), profile_path(user_id: @user.id) %>
-                            </figure>
-                        </div>
-                        
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    <strong><%= link_to @user.name, profile_path(user_id: @user.id) %></strong><br />
-                                    <small><%= link_to '@'+@user.username, profile_path(user_id: @user.id)  %></small><br>
-                                    <%=  @user.bio %><br />
-							        <small><i>Joined <%= time_ago_in_words @user.created_at %> ago</i></small>
-                                </p>
-                            </div>
-                        </div>
-                        <div></div>
-                        <div>
-                            <div class="media-right">
-                                <% if user_signed_in? && current_user != @user %>
-                                    <% if !current_user.following?(@user) %>
-                                        <%= button_to "Follow", friendships_path(user_id: @user.id) %>
-                                    <% else %>
-                                        <%= button_to "Unfollow", friendships_path(user_id: @user.id), method: :delete %>
-                                    <% end %>
-                                <% end %>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="panel-block">
-                    <div class="level is-mobile">
-                        <div class="level-item has-centered-text">
-                            <div>
-                                <p class="heading">Tweets</p>
-                                <p class="title is-6"><%= link_to @user.tweets.count, profile_path(user_id: @user.id) %></p>
-                            </div>
-                        </div>
-                        <div class="level-item has-centered-text">
-                            <div>
-                                <p class="heading">Following</p>
-                                <p class="title is-6"><%= link_to @user.following.count, followings_list_path(user_id: @user.id) %></p>
-                            </div>
-                        </div>
-                            <div class="level-item has-centered-text">
-                            <div>
-                                <p class="heading">Followers</p>
-                                <p class="title is-6"><%= link_to @user.followers.count, followers_list_path(user_id: @user.id) %></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
+        <%= render 'profile' %>
         <%= render 'trends' %>
       </div>
-       
     <div class="column is-half">
         <h1><%=  @user.name%><span>'s Tweets</span></h1>
         <% @tweets.order("created_at DESC").each do | tweet | %>

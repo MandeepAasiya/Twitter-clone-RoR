@@ -12,6 +12,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "tweets#index"
 
+  resources :conversations do
+    resources :messages
+  end
+
+
   resource :friendships, only: [:create, :destroy]
 
 
